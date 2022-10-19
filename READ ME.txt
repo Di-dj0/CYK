@@ -1,0 +1,19 @@
+-----------------------------------------------------------------------------------------------
+
+THIS FILE IS BEING SHARE VIA GITHUB FOR THE PURPOSE OF EASY ACCESS BETWEEN THE PARTIES INVOLVED
+WE DO NOT FAVOUR COPIES OF THE CODE FOR LATER IMPLEMENTATION USE IN THE DISCIPLINE OF COMPUTER 
+THEORY!
+
+-----------------------------------------------------------------------------------------------
+
+Description:
+An implementation of the Cocke–Younger–Kasami (CYK) algorithm.
+
+Students:
+Bruno Emanuel Zenatti 
+Luiz Gustavo Comarella
+
+Prof.:
+Ricardo Tavares Oliveira
+
+Discipline: CP44D - 2022.2
