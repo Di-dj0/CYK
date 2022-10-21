@@ -160,25 +160,98 @@ int main() {
 
         /*Inicio da logica*/
 
+        qtdConex = 3;
         char table[tamPalavra][tamPalavra][qtdConex] = {};
+
+        /* teste 1 */
+        
+        /*
 
         for(int i = 0; i < tamPalavra; i++) {
 
             int aux = 0;
-            for(int j = 0; j < linguagem.size(); j++){
+            for(int j = linguagem.size(); j != 0; j--){
 
-                for(int k = 0; k < linguagem[j].getQntConexoes(); k++){
+                for(int k = 0; k < linguagem[j].getQntConexoes(); k+=2){    //testi
 
                     if(entrada[i] == linguagem[j].getConexoes(k).getNome()){
 
-                        table[i][i][aux] = linguagem[j].getNome();
+                        table[0][i][aux] = linguagem[j].getNome();
                         
-                        cout << table[i][i][aux] << endl;
+                        cout << table[0][i][aux] << endl;
                         aux++;
                     }
                 }
             }
         }
+
+        for(int i = 0; i < tamPalavra; i++){
+
+            if(!ehMaiusculo(table[0][i][0])){
+                
+                cout << "erro" << endl;
+                return -1;
+            }
+        }
+
+        for(int i = 1; i < tamPalavra; i++){
+            
+            int count = 0;
+            for(int j = 0; j < tamPalavra; j++){
+                
+                
+                if(table[i][j][0])
+                    continue;
+
+                string aux = "";
+                aux += table[i-1][j][0];
+                aux += table[i-1][j+1][0];
+
+                for(int k = linguagem.size(); k >= 0; k--){
+
+                    for(int l = 0; l < linguagem[k].getQntConexoes(); l+=2){
+
+                    if(linguagem[k].getQntConexoes() > 2){
+
+                        string producao = "";
+                        producao += linguagem[k].getConexoes(l).getNome();
+                        producao += linguagem[k].getConexoes(l+1).getNome();
+
+                            if(aux == producao){
+
+                                cout << linguagem[k].getNome() << endl;
+
+                                table[i][j][count] = linguagem[k].getNome();
+                                count++;
+                                // table[i][j][count] = producao[1];
+                                // count++;
+                            }
+                            else{
+                                table[i][j][0] = aux[0];
+                                j++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for(int i = 0; i < tamPalavra; i++){
+            
+            for(int j = 0; j < tamPalavra; j++){
+
+                for(int k = 0; k < qtdConex; k++){
+                    cout << table[i][j][k];
+                }
+                cout << ',';
+            }
+            cout << endl;   
+        }
+        
+        */
+
+        /* teste 2 - tentar por pseudocódigo*/
+
         
 
     }
