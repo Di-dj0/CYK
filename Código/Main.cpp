@@ -4,7 +4,6 @@
 
 using namespace std;
 
-// void adicionaChar(string posicao, char adicional);
 
 bool contem(string posicao, char comparacao);
 
@@ -37,14 +36,13 @@ public:
         return nome;
     }
 
-    int getQntConexoes(){
+    int getQntConexoes() {
         
         return conexoes.size();
     }
 
 };
 
-// int Simbolo::maximo = 0;
 
 int main() {
 
@@ -57,7 +55,7 @@ int main() {
 
     cin >> numleituras;
 
-    for(int i = 0; i < numleituras; i++){
+    for(int i = 0; i < numleituras; i++) {
         
         cin >> simb >> lixo >> conexao;                                     //Le o simbolo, o lixo(->) e a conexao
 
@@ -71,75 +69,55 @@ int main() {
 
                     jaExiste = true;
 
-                    // cout << "ja existe" << endl;
-
                     if(ehMaiusculo(conexao[0])) {                           //Caso a conexao nao seja terminal
 
                         linguagem[j].setConexoes(conexao[0]);               //Seta mais conexoes a esse simbolo
                         linguagem[j].setConexoes(conexao[1]);
-                        
-
-                        // cout << "nao eh terminal" << endl;
                     }
 
-                    else {                                                 //Caso seja terminal
+                    else {                                                  //Caso seja terminal
+                    
                         linguagem[j].setConexoes(conexao[0]);               //Seta mais uma conexao a esse simbolo
-
-                        // cout << "eh terminal" << endl;
                     }
+
                     continue;
                 }
+                
             }
 
-            if(jaExiste == false) {                                        //Se nao existia esse simbolo
-
-                // cout << "nao existe" << endl;
+            if(jaExiste == false) {                                         //Se nao existia esse simbolo
 
                 linguagem.push_back(Simbolo(simb[0]));                      //Coloca no final do vector
 
-                if(i == 0) {                                               //Inicializa o iterador em um ponto que existe
+                if(i == 0) {                                                //Inicializa o iterador em um ponto que existe
+                    
                     posicao = linguagem.begin();
                     k++;
                 }
+
                 else {
+                    
                     posicao = linguagem.begin() + k;
                     k++;
                 }
 
-                // cout << "colocou " << (*posicao).getNome() << endl;
 
-                if(ehMaiusculo(conexao[0])) {                             //Caso a conexao nao seja terminal
-                    (*posicao).setConexoes(conexao[0]);                   //Seta mais conexoes a esse simbolo
+                if(ehMaiusculo(conexao[0])) {                               //Caso a conexao nao seja terminal
+                
+                    (*posicao).setConexoes(conexao[0]);                     //Seta mais conexoes a esse simbolo
                     (*posicao).setConexoes(conexao[1]);
-
-                    // cout << "nao eh terminal" << endl;
                 }
 
-                else {                                                    //Caso seja terminal
-                    (*posicao).setConexoes(conexao[0]);                   //Seta mais uma conexao a esse simbolo
-
-                    // cout << "eh terminal" << endl;
+                else {                                                      //Caso seja terminal
+                
+                    (*posicao).setConexoes(conexao[0]);                     //Seta mais uma conexao a esse simbolo
                 }
+                
             }
+
         }
 
-        // cout << "qnt em conexoes:" << (*posicao).getQntConexoes() << endl;
-
-        // cout << "finaliza o loop" << endl;
     }
-
-    /* for(int j = 0; j < linguagem.size(); j++){                             //Teste do linguagem
-
-        cout << '\n' << linguagem[j].getNome() << " - ";
-
-        for(int i = 0; i < linguagem[j].getQntConexoes(); i++){
-
-            cout << linguagem[j].getConexoes(i).getNome();
-
-        }
-
-        cout << endl;
-    } */
 
     
     /* Checa o maximo de conexoes possivel */
@@ -155,46 +133,44 @@ int main() {
 
         tamPalavra = entrada.length();
 
-        if(entrada == "*"){                                             //Somente * finaliza o programa, enunciado nao diz nada sobre dar enter "a toa"
+        if(entrada == "*"){                                                 //Somente * finaliza o programa, enunciado nao diz nada sobre dar enter "a toa"
             break;
         }
 
-        /*Inicio da logica*/
+        string table[tamPalavra][tamPalavra];
 
-        char table[tamPalavra][tamPalavra][qtdConex] = {'\0'};
+        for(int i = 0; i < tamPalavra; i++){
+            
+            for(int j = 0; j < tamPalavra; j++){
 
+                table[i][j] = "\0";
+            }
+        }
 
-        for(int i = 0; i < tamPalavra; i++) {                       //Transforma todas as letras minusculas em maiusculas, se possivel 
+        //Implementa o algoritmo CYK através da primeira diagonal
+        for(int i = 0; i < tamPalavra; i++) {                                
 
-            int aux = 0;
             for(int j = 0; j < linguagem.size(); j++){
 
                 for(int k = 0; k < linguagem[j].getQntConexoes(); k++){
 
                     if(entrada[i] == linguagem[j].getConexoes(k).getNome()){
 
-                        table[i][i][aux] = linguagem[j].getNome();
-                        
-                        cout << table[i][i][aux] << endl;
-                        aux++;
+                        table[i][i] += linguagem[j].getNome();
                     }
                 }
             }
         }
 
-        
-        
-
-        for(int l = 1; l < tamPalavra; l++){
+        //Continua o CYK
+        for(int l = 1; l <= tamPalavra; l++){
             
             for(int i = 0; i < tamPalavra-l+1; i++){
                 int j = i+l-1;
                 
-                int aux = 0;
                 for(int count = 0; count < linguagem.size(); count++){
                 
-                    int qntConex = linguagem[count].getQntConexoes();
-                
+                    int qntConex = linguagem[count].getQntConexoes();                
 
                     for(int k = i; k <= j-1; k++){
 
@@ -204,15 +180,10 @@ int main() {
                                 
                             if( contem(table[i][k], linguagem[count].getConexoes(rule).getNome()) == true
                                 &&
-                                contem(table[k+1][j], linguagem[count].getConexoes(rule+1).getNome()) == true ){
+                                contem(table[k+1][j], linguagem[count].getConexoes(rule+1).getNome()) == true ) {
 
-                                table[i][j][aux] = linguagem[count].getNome();
-                                
-                                cout << "escrita na tela antes da table " << linguagem[count].getNome() << endl;
-                                cout << "escrita q tem na table " << table[i][j][aux] << endl;
-                                cout << "pos x: " << i << " pos y: " << j << endl;
-                                cout << "aux valor : " << aux << endl;
-                                aux++;                                
+                                if(contem(table[i][j], linguagem[count].getNome()) == false)
+                                    table[i][j] += linguagem[count].getNome();                            
                             
                             }
 
@@ -223,28 +194,16 @@ int main() {
                 }
 
             }
-            // cout << "posicao final  " << table[0][tamPalavra][0];
+
         }
+        
+        if( contem(table[0][tamPalavra - 1], 'S') == true )
+            cout << entrada << ": SIM" << endl;
 
-        // Mostra tudo na tabela
-        /*
-        for(int i = 0; i < tamPalavra; i++){
-            for(int j = 0; j < tamPalavra; j++){
-                for(int k = 0; k < 3; k++){
-                    cout << "x: " << i << " y: " << j << " k: " << k << endl;
-                    cout << table[i][j][k] << endl;
-                }
-            }
-        }
-        */
-
-
-        if( contem(table[0][tamPalavra], 'S') == true){
-
-            cout << "SIM" << endl;
-        }
+        else
+            cout << entrada << ": NAO" << endl;
+        
     
-
     }
 
     return 0;
@@ -252,27 +211,34 @@ int main() {
 }
 
 
-bool contem(string posicao, char comparacao){
+bool contem(string posicao, char comparacao) {
 
-    for(int i = 0; i < posicao.size(); i++){
-        
-        if(posicao[i] == comparacao){
-
+    for(int i = 0; i < posicao.size(); i++)    
+        if(posicao[i] == comparacao) 
             return true;
-        }
-    }
-
+        
     return false;
 }
 
 bool ehMaiusculo(char c) {
-    if(c >= 65 && c <= 90) 
+
+    if(c >= 65 && c <= 90)
         return true;
-    else 
+
+    else
         return false;
+
 }
 
 //Testing
+
+/*
+3
+S -> AB
+A -> a
+B -> b
+ab
+*/
 
 /*
 7
